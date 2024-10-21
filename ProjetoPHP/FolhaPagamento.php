@@ -14,16 +14,21 @@ class FolhaPagamento {
             echo "Preencha todos os campos.";
             return;
         }
+        
+       $funcionario = new Funcionario($nome, $salario, $cargo, $horasT);
+
+       
+        $salarioTotal = $funcionario->calcularSalario();
 
         try {
             global $pdo; // Certifique-se de que a conexão com o banco de dados está disponível
-            $sql = "INSERT INTO funcionario (nome, salario, cargo, horasT) VALUES (:nome, :salario, :cargo, :horasT)";
+            $sql = "INSERT INTO funcionario (nome, salario, cargo, horasT) VALUES (:nome, :salario, :cargo, :salarioTotal)";
             $stmt = $pdo->prepare($sql);
     
             $stmt->bindParam(':nome', $nome);
             $stmt->bindParam(':salario', $salario);
             $stmt->bindParam(':cargo', $cargo);
-            $stmt->bindParam(':horasT', $horasT);
+            $stmt->bindParam(':horasT', $salarioTotal);
     
             $stmt->execute();
             echo "Funcionário cadastrado com sucesso!";
